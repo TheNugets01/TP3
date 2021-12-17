@@ -12,6 +12,7 @@
 
 //-------------------------------------------------------- Include système
 #include <iostream>
+#include <fstream>
 #include <cstring>
 using namespace std;
 
@@ -243,6 +244,37 @@ static bool explore( const char * unDepart, const char * uneArrivee , DataVille 
 
     return Find;
 }//----- Fin de explore
+
+void Catalogue::Import()
+{
+    /*string nfile;
+    cout << "Quel est le nom de la sauvegarde que vous voulez importer ?" << endl;
+    cin >> nfile;
+    ifstream src (nfile, ios_base::in);
+    cout << "Quel type d'import voulez vous effectuer ?" << endl;
+    char lecture = '1';
+    //cin >> lecture;
+    if(lecture == '1') // import tout
+    {
+        string c;
+        char[100] depart;
+        string arrive;
+        string moyen;
+        char type;
+        while(!src.eof())
+        {
+            src.get(type);
+            if(type=='S')
+            {
+                src.get(depart,100,',');
+                src.get(arrive,100,',');
+                src.get(moyen,100,',');
+                Ajuster(depart);
+                Inserer(new TrajetSimple(depart.c_str(),arrive.c_str(),moyen.c_str()));
+            }
+        }
+    }*/
+}//----- Fin de Import
 
 //-------------------------------------------- Constructeurs - destructeur
 Catalogue::Catalogue()

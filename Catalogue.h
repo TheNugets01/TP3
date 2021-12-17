@@ -45,6 +45,10 @@ public:
     // Mode d'emploi :
     // Permet de rechercher un itinéraire de plusieurs trajets par ville de départ et d'arrivee
 
+    void Import() ;
+    // Mode d'emploi :
+    // Permet d'importer des trajets present dans un fichier
+
     const ListeChainee * const GetListeParcours();
     // Mode d'emploi :
     // Permet d'acceder a la liste de parcours

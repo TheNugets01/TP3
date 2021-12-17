@@ -11,6 +11,7 @@ using namespace std;
 
 char * Saisi(); //Extension de la portée sinon double definition
 void Menu(Catalogue * catalogue);
+void AfficheMenu();
 
 int main()
 {
@@ -45,11 +46,7 @@ void Menu(Catalogue * catalogue)
 //
 {   
     char lecture;
-    cout << "Veuillez choisir une Action :" << endl;
-    cout << "- 1 : Ajouter un trajet au catalogue" << endl;
-    cout << "- 2 : Afficher le catalogue" << endl;
-    cout << "- 3 : Rechercher dans le cataloge " << endl;
-    cout << "- q : Quitter" << endl << ">> ";
+    AfficheMenu();
     cin >> lecture;
     while (lecture != 'q')
     {
@@ -147,17 +144,27 @@ void Menu(Catalogue * catalogue)
                 cout << "Votre Catalogue est vide" << endl;
             }
         }
+        else if(lecture =='4')
+        {
+            catalogue -> Import();
+        }
         else
         {
             cout << "Je n'ai pas compris veuillez recommencer !" << endl;
         }
 
         VIDEBUFFERCLAVIER();
-        cout << endl << "Veuillez choisir une Action :" << endl;
-        cout << "- 1 : Ajouter un trajet au catalogue" << endl;
-        cout << "- 2 : Afficher le catalogue" << endl;
-        cout << "- 3 : Rechercher dans le cataloge " << endl;
-        cout << "- q : Quitter" << endl << ">> ";
+        AfficheMenu();
         cin >> lecture;
     }
 } //----- Fin de Menu
+
+void AfficheMenu()
+{
+    cout << endl << "Veuillez choisir une Action :" << endl;
+    cout << "- 1 : Ajouter un trajet au catalogue" << endl;
+    cout << "- 2 : Afficher le catalogue" << endl;
+    cout << "- 3 : Rechercher dans le cataloge " << endl;
+    cout << "- 4 : Importer une sauvegarde dans le Catalogue " << endl;
+    cout << "- q : Quitter" << endl << ">> ";
+}
