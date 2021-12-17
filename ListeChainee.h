@@ -11,6 +11,9 @@
 #define LISTECHAINNEE_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include <fstream>
+using namespace std;
+
 #include "Maillon.h"
 
 //------------------------------------------------------------- Constantes
@@ -27,6 +30,9 @@ class ListeChainee
 {
 public:
 //--------------------------- Méthodes publiques
+    void Sauvegarde( ofstream & dest, int mode );
+    // Mode d'emploi :
+    // Permet de Sauvegarder l'intégralité ou une partie de la liste en fonction de différents critéres 
     void AjouterTri( Trajet * contenu);
     // Mode d'emploi :
     // Ajout d'un trajet dans la liste par ordre alphabétique de la ville de départ

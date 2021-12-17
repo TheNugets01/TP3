@@ -13,6 +13,7 @@
 //-------------------------------------------------------- Include système
 
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 //------------------------------------------------------ Include personnel
@@ -24,8 +25,19 @@ using namespace std;
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
+string convertToString(char* a)
+{
+    int size =0;
+    for (size = 0; a[size]!= '\0' ; ++size){}
+    string s = "";
 
-void TrajetSimple::Afficher( int mode ) const
+    for (int i = 0; i < size; i++) {
+        s = s + a[i];
+    }
+    return s;
+}
+
+string TrajetSimple::Afficher( int mode ) const
 {
   if( mode == 0 )
   {
@@ -35,6 +47,17 @@ void TrajetSimple::Afficher( int mode ) const
   {
     cout << " - " << villeDepart << " à " << villeArrivee << " en " << moyenTransport << endl;
   }
+  else if ( mode == 2 )
+  {
+    string leDepart = convertToString(villeDepart);
+    string lArrivee = convertToString(villeArrivee);
+    string leMoyenTransport = convertToString(moyenTransport);
+
+    string Ligne = "S;"+leDepart+','+leMoyenTransport+','+lArrivee;
+    return Ligne;
+  }
+
+  return "void"; 
 } //----- Fin de Afficher
 
 //----------------------------------------------------------------Getteur

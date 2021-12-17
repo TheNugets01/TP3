@@ -77,9 +77,24 @@ void LireCompose(ifstream & src)
 
 //----------------------------------------------------- Méthodes publiques
 
-const ListeChainee * const Catalogue::GetListeParcours()
+ListeChainee * Catalogue::GetListeParcours()
 {
     return listeParcours;
+}
+
+void Catalogue::Sauvegarde()
+{
+    int mode = 0;
+    string lecture;
+    cout << " --- Menu de Sauvegarde --- " << endl;
+    cout << "Dans quel fichier voulez vous faire votre sauvegarde" << endl;
+    cin >> lecture;
+    ofstream dest ( lecture );
+    cout << endl;
+
+    cout << "Choisissez le type de Sauvegarde : du Catalogue (1)" << endl;
+    GetListeParcours()->Sauvegarde( dest , 1);
+
 }
 
 static bool explore( const char * , const char * , DataVille * , int , Maillon * );
@@ -287,6 +302,7 @@ static bool explore( const char * unDepart, const char * uneArrivee , DataVille 
     return Find;
 }//----- Fin de explore
 
+<<<<<<< HEAD
 void Catalogue::Import()
 {
     string nfile;
@@ -322,6 +338,8 @@ void Catalogue::Import()
     }
 }//----- Fin de Import
 
+=======
+>>>>>>> ca248683fe405edd7ed76cd6056679c6a6424136
 //-------------------------------------------- Constructeurs - destructeur
 Catalogue::Catalogue()
 {

@@ -32,7 +32,7 @@ class TrajetCompose : public Trajet
 public:
 //----------------------------------------------------- Méthodes publiques
 
-    void Afficher( int mode = 0 ) const;
+    string Afficher( int mode = 0 ) const;
     // Mode d'emploi :
     // Affiche le contenu du trajetCompose
 

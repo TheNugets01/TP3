@@ -24,7 +24,7 @@ using namespace std;
 
 //----------------------------------------------------- Méthodes publiques
 
-void TrajetCompose::Afficher( int mode ) const
+string TrajetCompose::Afficher( int mode ) const
 {
   #ifdef MAP
       cout << "Appel a l'Afficheur() <TrajetCompose>" << endl;
