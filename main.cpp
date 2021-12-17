@@ -146,7 +146,11 @@ void Menu(Catalogue * catalogue)
         }
         else if(lecture =='4')
         {
-            catalogue -> Import();
+            //catalogue -> Import();
+        }
+        else if( lecture == '5' )
+        {
+            catalogue->Sauvegarde();
         }
         else
         {
@@ -166,5 +170,6 @@ void AfficheMenu()
     cout << "- 2 : Afficher le catalogue" << endl;
     cout << "- 3 : Rechercher dans le cataloge " << endl;
     cout << "- 4 : Importer une sauvegarde dans le Catalogue " << endl;
+    cout << "- 5 : Faire une Sauvegarde " << endl;
     cout << "- q : Quitter" << endl << ">> ";
 }

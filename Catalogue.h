@@ -31,6 +31,9 @@ class Catalogue
 
 public:
 //----------------------------------------------------- Méthodes publiques
+    void Sauvegarde();
+    // Mode d'emploi :
+    // Permet de Sauvegarder l'intégralité ou une partie du Catalogue en fonction de différents critéres 
     void Inserer( Trajet * unTrajet);
     // Mode d'emploi :
     // Permet d'insérer un Trajet au catalogue en le triant par ordre alphabétique
@@ -45,11 +48,7 @@ public:
     // Mode d'emploi :
     // Permet de rechercher un itinéraire de plusieurs trajets par ville de départ et d'arrivee
 
-    void Import() ;
-    // Mode d'emploi :
-    // Permet d'importer des trajets present dans un fichier
-
-    const ListeChainee * const GetListeParcours();
+    ListeChainee * GetListeParcours();
     // Mode d'emploi :
     // Permet d'acceder a la liste de parcours
 

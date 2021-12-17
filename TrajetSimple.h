@@ -24,7 +24,7 @@ class TrajetSimple : public Trajet
 public:
 //----------------------------------------------------- Méthodes publiques
 
-    void Afficher( int mode = 0) const;
+    string Afficher( int mode = 0) const;
     // Mode d'emploi :
     // Affiche le contenu de la liste :
     // Par défaut mode = 0 : On affiche les trajets de manière classique

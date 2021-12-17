@@ -30,7 +30,7 @@ class Trajet
 public:
 //----------------------------------------------------- Méthodes publiques
 
-    virtual void Afficher( int mode = 0 ) const = 0;
+    virtual string Afficher( int mode = 0 ) const = 0;
     // Mode d'emploi :
     // Affiche le contenu de la liste :
     // Par défaut mode = 0 : On affiche les trajets de manière classique

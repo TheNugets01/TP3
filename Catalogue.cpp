@@ -35,9 +35,24 @@ typedef struct
 
 //----------------------------------------------------- Méthodes publiques
 
-const ListeChainee * const Catalogue::GetListeParcours()
+ListeChainee * Catalogue::GetListeParcours()
 {
     return listeParcours;
+}
+
+void Catalogue::Sauvegarde()
+{
+    int mode = 0;
+    string lecture;
+    cout << " --- Menu de Sauvegarde --- " << endl;
+    cout << "Dans quel fichier voulez vous faire votre sauvegarde" << endl;
+    cin >> lecture;
+    ofstream dest ( lecture );
+    cout << endl;
+
+    cout << "Choisissez le type de Sauvegarde : du Catalogue (1)" << endl;
+    GetListeParcours()->Sauvegarde( dest , 1);
+
 }
 
 static bool explore( const char * , const char * , DataVille * , int , Maillon * );
@@ -244,37 +259,6 @@ static bool explore( const char * unDepart, const char * uneArrivee , DataVille 
 
     return Find;
 }//----- Fin de explore
-
-void Catalogue::Import()
-{
-    /*string nfile;
-    cout << "Quel est le nom de la sauvegarde que vous voulez importer ?" << endl;
-    cin >> nfile;
-    ifstream src (nfile, ios_base::in);
-    cout << "Quel type d'import voulez vous effectuer ?" << endl;
-    char lecture = '1';
-    //cin >> lecture;
-    if(lecture == '1') // import tout
-    {
-        string c;
-        char[100] depart;
-        string arrive;
-        string moyen;
-        char type;
-        while(!src.eof())
-        {
-            src.get(type);
-            if(type=='S')
-            {
-                src.get(depart,100,',');
-                src.get(arrive,100,',');
-                src.get(moyen,100,',');
-                Ajuster(depart);
-                Inserer(new TrajetSimple(depart.c_str(),arrive.c_str(),moyen.c_str()));
-            }
-        }
-    }*/
-}//----- Fin de Import
 
 //-------------------------------------------- Constructeurs - destructeur
 Catalogue::Catalogue()

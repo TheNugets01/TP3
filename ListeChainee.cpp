@@ -12,6 +12,7 @@
 
 //-------------------------------------------------------- Include système
 #include <iostream>
+#include <fstream>
 #include <cstring>
 using namespace std;
 
@@ -31,6 +32,22 @@ void NouveauEnSuite(  Trajet * contenu , Maillon * actuelle)
   nouveau -> SetProchain( MemSuivant );
   actuelle -> SetProchain( nouveau );
 }
+
+
+
+void ListeChainee::Sauvegarde( ofstream & dest, int mode )
+{
+  Maillon * actuelle = debut;
+  if(mode == 1)
+  {
+    while( actuelle != nullptr)
+    {
+      dest << actuelle->GetTrajet()->Afficher(2) << endl ;
+      actuelle = actuelle->GetProchain();
+    }
+  }
+}
+
 
 Maillon * ListeChainee::GetDebut() const
 {
