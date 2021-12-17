@@ -13,6 +13,7 @@
 //--------------------------------------------------- Interfaces utilisées
 
 #include "ListeChainee.h"
+#include <fstream>
 
 //------------------------------------------------------------- Constantes
 
@@ -33,7 +34,18 @@ public:
 //----------------------------------------------------- Méthodes publiques
     void Sauvegarde();
     // Mode d'emploi :
-    // Permet de Sauvegarder l'intégralité ou une partie du Catalogue en fonction de différents critéres 
+    // Permet de Sauvegarder l'intégralité ou une partie du Catalogue en fonction de différents critéres
+    void Import();
+    // Mode d'emploi :
+    // Permet d'importer des trajet a partir d'un fichier
+    void LireSimple(ifstream & src);
+    // Mode d'emploi :
+    // Permet de lire un trajet simple dans un fichier passé en paramètre et de l'ajouter au catalogue
+    void LireCompose(ifstream & src);
+    // Mode d'emploi :
+    // Permet de lire un trajet Compose dans un fichier passé en paramètre et de l'ajouter au catalogue
+
+
     void Inserer( Trajet * unTrajet);
     // Mode d'emploi :
     // Permet d'insérer un Trajet au catalogue en le triant par ordre alphabétique
@@ -43,7 +55,6 @@ public:
     void Rechercher (const char * depart , const char * arrivee , int mode = 0 ) const;
     // Mode d'emploi :
     // Permet de rechercher un trajet par ville de départ et d'arrivee
-
     void RechercherProfondeur(const char * depart, const char * arrivee) const;
     // Mode d'emploi :
     // Permet de rechercher un itinéraire de plusieurs trajets par ville de départ et d'arrivee

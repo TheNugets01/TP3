@@ -12,7 +12,6 @@
 
 //-------------------------------------------------------- Include système
 #include <iostream>
-#include <fstream>
 #include <cstring>
 using namespace std;
 
@@ -44,37 +43,6 @@ char * Ajuster(char * aAjuster)
     return ajuste;
 }
 
-void LireSimple(ifstream & src)
-{
-    char depart[TAILLEBUFFER];
-    char arrive[TAILLEBUFFER];
-    char moyen[TAILLEBUFFER];
-    src.getline(depart,TAILLEBUFFER,',');
-    src.getline(moyen,TAILLEBUFFER,',');
-    src.getline(arrive,TAILLEBUFFER,'\n');
-    Inserer(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
-}
-
-void LireCompose(ifstream & src)
-{
-    char depart[TAILLEBUFFER];
-    char arrive[TAILLEBUFFER];
-    char moyen[TAILLEBUFFER];
-    src.getline(depart,TAILLEBUFFER,',');
-    src.getline(moyen,TAILLEBUFFER,',');
-    src.getline(arrive,TAILLEBUFFER,',');
-    ListeChainee * tc = new ListeChainee();
-    tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
-    while(src.peek()!='\n')
-    {
-        strcpy(depart,arrive);
-        src.getline(moyen,TAILLEBUFFER,',');
-        src.getline(arrive,TAILLEBUFFER,',');
-        tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
-    }
-    Inserer(new TrajetCompose(tc));
-}
-
 //----------------------------------------------------- Méthodes publiques
 
 ListeChainee * Catalogue::GetListeParcours()
@@ -94,7 +62,6 @@ void Catalogue::Sauvegarde()
 
     cout << "Choisissez le type de Sauvegarde : du Catalogue (1)" << endl;
     GetListeParcours()->Sauvegarde( dest , 1);
-
 }
 
 static bool explore( const char * , const char * , DataVille * , int , Maillon * );
@@ -302,6 +269,37 @@ static bool explore( const char * unDepart, const char * uneArrivee , DataVille 
     return Find;
 }//----- Fin de explore
 
+void Catalogue::LireSimple(ifstream & src)
+{
+    char depart[TAILLEBUFFER];
+    char arrive[TAILLEBUFFER];
+    char moyen[TAILLEBUFFER];
+    src.getline(depart,TAILLEBUFFER,',');
+    src.getline(moyen,TAILLEBUFFER,',');
+    src.getline(arrive,TAILLEBUFFER,'\n');
+    Inserer(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
+}
+
+void Catalogue::LireCompose(ifstream & src)
+{
+    char depart[TAILLEBUFFER];
+    char arrive[TAILLEBUFFER];
+    char moyen[TAILLEBUFFER];
+    src.getline(depart,TAILLEBUFFER,',');
+    src.getline(moyen,TAILLEBUFFER,',');
+    src.getline(arrive,TAILLEBUFFER,',');
+    ListeChainee * tc = new ListeChainee();
+    tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
+    while(src.peek()!='\n')
+    {
+        strcpy(depart,arrive);
+        src.getline(moyen,TAILLEBUFFER,',');
+        src.getline(arrive,TAILLEBUFFER,',');
+        tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
+    }
+    Inserer(new TrajetCompose(tc));
+}
+
 void Catalogue::Import()
 {
     string nfile;
@@ -316,24 +314,41 @@ void Catalogue::Import()
         char type;
         while(!src.eof())
         {
+            char depart[TAILLEBUFFER];
+            char arrive[TAILLEBUFFER];
+            char moyen[TAILLEBUFFER];
             src.get(type);
             src.ignore(TAILLEBUFFER,';');
             if(type=='S')
             {
-                LireSimple(src);
+                src.getline(depart,TAILLEBUFFER,',');
+                src.getline(moyen,TAILLEBUFFER,',');
+                src.getline(arrive,TAILLEBUFFER,'\n');
+                Inserer(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
             }
             else if(type=='C')
             {
-                LireCompose(src);
+                src.getline(depart,TAILLEBUFFER,',');
+                src.getline(moyen,TAILLEBUFFER,',');
+                src.getline(arrive,TAILLEBUFFER,',');
+                ListeChainee * tc = new ListeChainee();
+                tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
+                while(src.peek()!='\n')
+                {
+                    strcpy(depart,arrive);
+                    src.getline(moyen,TAILLEBUFFER,',');
+                    src.getline(arrive,TAILLEBUFFER,',');
+                    tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
+                }
+                Inserer(new TrajetCompose(tc));
             }
         }
-        else if(import=='2')//import par type de trajet
-        {
-            cout << "Quel type de Trajet voulez vous importer ? (Tapez S ou C)" << endl;
-            char choix;
-            cin >> choix;
-            if()
-        }
+    }
+    else if(lecture=='2')//import par type de trajet
+    {
+        cout << "Quel type de Trajet voulez vous importer ? (Tapez S ou C)" << endl;
+        char choix;
+        cin >> choix;
     }
 }//----- Fin de Import
 

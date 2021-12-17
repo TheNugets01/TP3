@@ -146,7 +146,7 @@ void Menu(Catalogue * catalogue)
         }
         else if(lecture =='4')
         {
-            //catalogue -> Import();
+            catalogue -> Import();
         }
         else if( lecture == '5' )
         {
