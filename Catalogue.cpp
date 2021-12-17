@@ -302,7 +302,6 @@ static bool explore( const char * unDepart, const char * uneArrivee , DataVille 
     return Find;
 }//----- Fin de explore
 
-<<<<<<< HEAD
 void Catalogue::Import()
 {
     string nfile;
@@ -338,8 +337,6 @@ void Catalogue::Import()
     }
 }//----- Fin de Import
 
-=======
->>>>>>> ca248683fe405edd7ed76cd6056679c6a6424136
 //-------------------------------------------- Constructeurs - destructeur
 Catalogue::Catalogue()
 {
