@@ -1,1 +1,3 @@
-S;D,M,A
+S;Strasbourg,Avion,Lyon
+C,Lille,Bordeaux;Lille,Pied,Lens,Train,Bordeaux,
+

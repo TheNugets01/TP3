@@ -19,6 +19,8 @@ using namespace std;
 //------------------------------------------------------ Include personnel
 
 #include "Catalogue.h"
+#include "TrajetSimple.h"
+#include "TrajetCompose.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -32,6 +34,46 @@ typedef struct
     char * Nom = nullptr;
     char * Parent = nullptr;
 }DataVille;
+
+//----------------------------------------------------- Fonction Ordinaire
+
+char * Ajuster(char * aAjuster)
+{
+    char * ajuste = new char[strlen(aAjuster)+1];
+    strcpy( ajuste , aAjuster );
+    return ajuste;
+}
+
+void LireSimple(ifstream & src)
+{
+    char depart[TAILLEBUFFER];
+    char arrive[TAILLEBUFFER];
+    char moyen[TAILLEBUFFER];
+    src.getline(depart,TAILLEBUFFER,',');
+    src.getline(moyen,TAILLEBUFFER,',');
+    src.getline(arrive,TAILLEBUFFER,'\n');
+    Inserer(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
+}
+
+void LireCompose(ifstream & src)
+{
+    char depart[TAILLEBUFFER];
+    char arrive[TAILLEBUFFER];
+    char moyen[TAILLEBUFFER];
+    src.getline(depart,TAILLEBUFFER,',');
+    src.getline(moyen,TAILLEBUFFER,',');
+    src.getline(arrive,TAILLEBUFFER,',');
+    ListeChainee * tc = new ListeChainee();
+    tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
+    while(src.peek()!='\n')
+    {
+        strcpy(depart,arrive);
+        src.getline(moyen,TAILLEBUFFER,',');
+        src.getline(arrive,TAILLEBUFFER,',');
+        tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
+    }
+    Inserer(new TrajetCompose(tc));
+}
 
 //----------------------------------------------------- Méthodes publiques
 
@@ -247,33 +289,37 @@ static bool explore( const char * unDepart, const char * uneArrivee , DataVille 
 
 void Catalogue::Import()
 {
-    /*string nfile;
+    string nfile;
     cout << "Quel est le nom de la sauvegarde que vous voulez importer ?" << endl;
     cin >> nfile;
     ifstream src (nfile, ios_base::in);
     cout << "Quel type d'import voulez vous effectuer ?" << endl;
-    char lecture = '1';
-    //cin >> lecture;
+    char lecture;
+    cin >> lecture;
     if(lecture == '1') // import tout
     {
-        string c;
-        char[100] depart;
-        string arrive;
-        string moyen;
         char type;
         while(!src.eof())
         {
             src.get(type);
+            src.ignore(TAILLEBUFFER,';');
             if(type=='S')
             {
-                src.get(depart,100,',');
-                src.get(arrive,100,',');
-                src.get(moyen,100,',');
-                Ajuster(depart);
-                Inserer(new TrajetSimple(depart.c_str(),arrive.c_str(),moyen.c_str()));
+                LireSimple(src);
+            }
+            else if(type=='C')
+            {
+                LireCompose(src);
             }
         }
-    }*/
+        else if(import=='2')//import par type de trajet
+        {
+            cout << "Quel type de Trajet voulez vous importer ? (Tapez S ou C)" << endl;
+            char choix;
+            cin >> choix;
+            if()
+        }
+    }
 }//----- Fin de Import
 
 //-------------------------------------------- Constructeurs - destructeur
