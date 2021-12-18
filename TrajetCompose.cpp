@@ -33,6 +33,7 @@ string TrajetCompose::Afficher( int mode ) const
   cout << "Trajet Composee de : " << endl;
   listeTrajets->Afficher( 1 );
   cout << endl;
+  return "void";
 } //----- Fin de Afficher
 
 //----------------------------------------------------------------Getteur

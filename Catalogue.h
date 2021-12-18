@@ -44,6 +44,7 @@ public:
     void LireCompose(ifstream & src);
     // Mode d'emploi :
     // Permet de lire un trajet Compose dans un fichier passé en paramètre et de l'ajouter au catalogue
+    void LireFichier(ifstream & src, char typeTrajet);
 
 
     void Inserer( Trajet * unTrajet);

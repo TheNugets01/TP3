@@ -269,35 +269,40 @@ static bool explore( const char * unDepart, const char * uneArrivee , DataVille 
     return Find;
 }//----- Fin de explore
 
-void Catalogue::LireSimple(ifstream & src)
+void Catalogue::LireFichier(ifstream & src, char typeTrajet)
 {
     char depart[TAILLEBUFFER];
     char arrive[TAILLEBUFFER];
     char moyen[TAILLEBUFFER];
-    src.getline(depart,TAILLEBUFFER,',');
-    src.getline(moyen,TAILLEBUFFER,',');
-    src.getline(arrive,TAILLEBUFFER,'\n');
-    Inserer(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
-}
-
-void Catalogue::LireCompose(ifstream & src)
-{
-    char depart[TAILLEBUFFER];
-    char arrive[TAILLEBUFFER];
-    char moyen[TAILLEBUFFER];
-    src.getline(depart,TAILLEBUFFER,',');
-    src.getline(moyen,TAILLEBUFFER,',');
-    src.getline(arrive,TAILLEBUFFER,',');
-    ListeChainee * tc = new ListeChainee();
-    tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
-    while(src.peek()!='\n')
+    if(typeTrajet=='S')
     {
-        strcpy(depart,arrive);
+        src.getline(depart,TAILLEBUFFER,',');
+        src.getline(moyen,TAILLEBUFFER,',');
+        src.getline(arrive,TAILLEBUFFER,'\n');
+        Inserer(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
+    }
+    else if(typeTrajet=='C')
+    {
+        src.getline(depart,TAILLEBUFFER,',');
         src.getline(moyen,TAILLEBUFFER,',');
         src.getline(arrive,TAILLEBUFFER,',');
+        ListeChainee * tc = new ListeChainee();
         tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
+        while(src.peek()!='\n' && src.peek()!=EOF)
+        {
+            strcpy(depart,arrive);
+            src.getline(moyen,TAILLEBUFFER,',');
+            src.getline(arrive,TAILLEBUFFER,',');
+            tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
+            if(src.eof())
+                cout << "Bloqué4" << endl;
+        }
+        Inserer(new TrajetCompose(tc));
+        if(!src.eof())
+        {
+            src.ignore(TAILLEBUFFER,'\n');
+        }
     }
-    Inserer(new TrajetCompose(tc));
 }
 
 void Catalogue::Import()
@@ -314,34 +319,9 @@ void Catalogue::Import()
         char type;
         while(!src.eof())
         {
-            char depart[TAILLEBUFFER];
-            char arrive[TAILLEBUFFER];
-            char moyen[TAILLEBUFFER];
             src.get(type);
             src.ignore(TAILLEBUFFER,';');
-            if(type=='S')
-            {
-                src.getline(depart,TAILLEBUFFER,',');
-                src.getline(moyen,TAILLEBUFFER,',');
-                src.getline(arrive,TAILLEBUFFER,'\n');
-                Inserer(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
-            }
-            else if(type=='C')
-            {
-                src.getline(depart,TAILLEBUFFER,',');
-                src.getline(moyen,TAILLEBUFFER,',');
-                src.getline(arrive,TAILLEBUFFER,',');
-                ListeChainee * tc = new ListeChainee();
-                tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
-                while(src.peek()!='\n')
-                {
-                    strcpy(depart,arrive);
-                    src.getline(moyen,TAILLEBUFFER,',');
-                    src.getline(arrive,TAILLEBUFFER,',');
-                    tc -> AjouterFin(new TrajetSimple(Ajuster(depart),Ajuster(arrive),Ajuster(moyen)));
-                }
-                Inserer(new TrajetCompose(tc));
-            }
+            LireFichier(src,type);
         }
     }
     else if(lecture=='2')//import par type de trajet
@@ -349,6 +329,58 @@ void Catalogue::Import()
         cout << "Quel type de Trajet voulez vous importer ? (Tapez S ou C)" << endl;
         char choix;
         cin >> choix;
+        char type;
+        while(!src.eof())
+        {
+            src.get(type);
+            src.ignore(TAILLEBUFFER,';');
+            if(type==choix)
+            {
+                LireFichier(src,type);
+            }
+            else
+            {
+                src.ignore(TAILLEBUFFER,'\n');
+            }
+        }
+    }
+    else if(lecture=='3')// import par Ville de depart et/ou arrive
+    {
+        cout << "Indiquez votre ville de depart (ou -1 si import par ville d'arrivee)" << endl;
+        string choixDepart;
+        cin >> choixDepart;
+        string choixArrivee;
+        if(choixDepart!="-1")
+        {
+            cout << "Indiquez votre ville d'arrive (ou -1 si uniquement par depart)" << endl;
+        }
+        else
+        {
+            cout << "Indiquez votre ville d'arrivee : " << endl;
+        }
+        cin >> choixArrivee;
+        while(!src.eof())
+        {
+            string depart;
+            string arrivee;
+            char type;
+            src.get(type);
+            src.ignore(TAILLEBUFFER,',');
+            getline(src,depart,',');
+            getline(src,arrivee,';');
+            if((choixDepart == depart && (choixArrivee == arrivee || choixArrivee=="-1")) || (choixArrivee==arrivee && choixDepart=="-1"))
+            {
+                LireFichier(src,type);
+            }
+            else
+            {
+                src.ignore(TAILLEBUFFER,'\n');
+            }
+        }
+        else if(lecture == '4') // import par intervalle de trajet
+        {
+
+        }
     }
 }//----- Fin de Import
 

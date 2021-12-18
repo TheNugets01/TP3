@@ -1,0 +1,2 @@
+Gerer les mauvaises saisie :
+- Quand tu veux importer des trajets par ville de depart et arrivee qui n'existent pas dans le fichier
