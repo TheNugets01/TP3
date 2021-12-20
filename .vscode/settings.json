@@ -1,6 +1,15 @@
 {
     "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "array": "cpp",
+        "functional": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "*.tcc": "cpp",
+        "iostream": "cpp"
     }
 }

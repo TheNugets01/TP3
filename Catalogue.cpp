@@ -36,11 +36,69 @@ typedef struct
 
 //----------------------------------------------------- Fonction Ordinaire
 
+static bool explore( const char * unDepart, const char * uneArrivee , DataVille * Ville , int VilleUnique, Maillon * debutListe)
+{
+    #ifdef MAP
+        cout << "Appel a la fonction ordinaire explore de <Catalogue> pour " << unDepart << endl;
+    #endif
+
+    Maillon * actuelle = debutListe;
+    bool Find = false;
+
+    while( actuelle != nullptr )
+    // Parcours du Catalogue
+    {
+        if( strcmp( actuelle->GetTrajet()->GetVilleDepart() , unDepart ) == 0 )
+        // On trouve les Enfants du depart actuelle
+        {
+            for( int i = 0 ; i < VilleUnique ; ++i)
+            // Parcours les villes
+            {
+                if( strcmp( actuelle->GetTrajet()->GetVilleArrivee() , Ville[i].Nom ) == 0 && Ville[i].Parent == nullptr )
+                // Retrouve l'enfant dans ville
+                {
+                    if ( strcmp( uneArrivee , Ville[i].Nom) == 0)
+                    {
+                        Ville[i].Parent = new char[ strlen( unDepart ) + 1 ];
+                        strcpy( Ville[i].Parent , unDepart );
+                        // debuger : cout << "/ " << "OUI!" << " /" ;
+                        return Find = true;
+                    }
+                    else if( Ville[i].Parent == nullptr )
+                    {
+                        Ville[i].Parent = new char[ strlen( unDepart ) + 1 ];
+                        strcpy(Ville[i].Parent , unDepart);
+
+                        // Exploration recursive des enfants
+                        Find = explore( Ville[i].Nom , uneArrivee , Ville , VilleUnique , debutListe );
+
+                        if(Find)
+                        // On stop la recherche
+                        {
+                            return Find;
+                        }
+                    }
+                    
+                }
+            }
+        }
+
+        actuelle = actuelle->GetProchain();
+    }
+
+    return Find;
+}//----- Fin de explore
+
 char * Ajuster(char * aAjuster)
 {
     char * ajuste = new char[strlen(aAjuster)+1];
     strcpy( ajuste , aAjuster );
     return ajuste;
+}
+
+bool ExistanceFichier(const string& name){
+    ifstream f(name.c_str());
+    return f.good();
 }
 
 //----------------------------------------------------- Méthodes publiques
@@ -63,9 +121,6 @@ void Catalogue::Sauvegarde()
     cout << "Choisissez le type de Sauvegarde : du Catalogue (1)" << endl;
     GetListeParcours()->Sauvegarde( dest , 1);
 }
-
-static bool explore( const char * , const char * , DataVille * , int , Maillon * );
-//Fonction d'exploration pour la recherche avancé
 
 void Catalogue::Inserer( Trajet * aInserer)
 {
@@ -216,59 +271,6 @@ void Catalogue::RechercherProfondeur(const char * unDepart , const char * uneArr
     
 }//----- Fin de RechercherProfondeur
 
-static bool explore( const char * unDepart, const char * uneArrivee , DataVille * Ville , int VilleUnique, Maillon * debutListe)
-{
-    #ifdef MAP
-        cout << "Appel a la fonction ordinaire explore de <Catalogue> pour " << unDepart << endl;
-    #endif
-
-    Maillon * actuelle = debutListe;
-    bool Find = false;
-
-    while( actuelle != nullptr )
-    // Parcours du Catalogue
-    {
-        if( strcmp( actuelle->GetTrajet()->GetVilleDepart() , unDepart ) == 0 )
-        // On trouve les Enfants du depart actuelle
-        {
-            for( int i = 0 ; i < VilleUnique ; ++i)
-            // Parcours les villes
-            {
-                if( strcmp( actuelle->GetTrajet()->GetVilleArrivee() , Ville[i].Nom ) == 0 && Ville[i].Parent == nullptr )
-                // Retrouve l'enfant dans ville
-                {
-                    if ( strcmp( uneArrivee , Ville[i].Nom) == 0)
-                    {
-                        Ville[i].Parent = new char[ strlen( unDepart ) + 1 ];
-                        strcpy( Ville[i].Parent , unDepart );
-                        // debuger : cout << "/ " << "OUI!" << " /" ;
-                        return Find = true;
-                    }
-                    else if( Ville[i].Parent == nullptr )
-                    {
-                        Ville[i].Parent = new char[ strlen( unDepart ) + 1 ];
-                        strcpy(Ville[i].Parent , unDepart);
-
-                        // Exploration recursive des enfants
-                        Find = explore( Ville[i].Nom , uneArrivee , Ville , VilleUnique , debutListe );
-
-                        if(Find)
-                        // On stop la recherche
-                        {
-                            return Find;
-                        }
-                    }
-                    
-                }
-            }
-        }
-
-        actuelle = actuelle->GetProchain();
-    }
-
-    return Find;
-}//----- Fin de explore
-
 void Catalogue::LireFichier(ifstream & src, char typeTrajet)
 {
     char depart[TAILLEBUFFER];
@@ -307,11 +309,28 @@ void Catalogue::LireFichier(ifstream & src, char typeTrajet)
 
 void Catalogue::Import()
 {
+    bool succeed = false;
+    bool created = false;
     string nfile;
     cout << "Quel est le nom de la sauvegarde que vous voulez importer ?" << endl;
-    cin >> nfile;
+    while(!created)
+    {
+        cin >> nfile;
+        if(ExistanceFichier(nfile))
+        {
+            created = true;
+        }
+        else
+        {
+            cout << "Ce nom de fichier n'existe pas veuillez reessayer " << endl;
+        }
+    }
     ifstream src (nfile, ios_base::in);
     cout << "Quel type d'import voulez vous effectuer ?" << endl;
+    cout << "- 1 : Sans critere de selection " << endl;
+    cout << "- 2 : Selon le type de trajet " << endl;
+    cout << "- 3 : Selon la ville de depart et/ou d'arrivee " << endl;
+    cout << "- 4 : Selon l'index du trajet " << endl;
     char lecture;
     cin >> lecture;
     if(lecture == '1') // import tout
@@ -322,13 +341,26 @@ void Catalogue::Import()
             src.get(type);
             src.ignore(TAILLEBUFFER,';');
             LireFichier(src,type);
+            succeed = true;
         }
     }
     else if(lecture=='2')//import par type de trajet
     {
+        bool bonChoix = false;
         cout << "Quel type de Trajet voulez vous importer ? (Tapez S ou C)" << endl;
         char choix;
-        cin >> choix;
+        while(!bonChoix)
+        {
+            cin >> choix;
+            if(choix == 'C' || choix == 'S')
+            {
+                bonChoix = true;
+            }
+            else
+            {
+                cout << "je n'ai pas compris veuillez reessayer " << endl;
+            }
+        }
         char type;
         while(!src.eof())
         {
@@ -343,6 +375,7 @@ void Catalogue::Import()
                 src.ignore(TAILLEBUFFER,'\n');
             }
         }
+        succeed = true;
     }
     else if(lecture=='3')// import par Ville de depart et/ou arrive
     {
@@ -377,10 +410,41 @@ void Catalogue::Import()
                 src.ignore(TAILLEBUFFER,'\n');
             }
         }
-        else if(lecture == '4') // import par intervalle de trajet
+        succeed = true;
+    }
+    else if(lecture == '4') // import par intervalle de trajet
+    {
+        int n;
+        int m;
+        int ligneLu = 1;
+        cout << "Quel est le premier trajet que vous voulez importer ?" << endl;
+        cin >> n;
+        cout << "Quel est le dernier trajet que vous voulez importer ?" << endl;
+        cin >> m;
+        char type;
+        while(!src.eof())
         {
-
+            if(ligneLu >= n && ligneLu <= m)
+            {
+                src.get(type);
+                src.ignore(TAILLEBUFFER,';');
+                LireFichier(src,type);
+            }
+            else
+            {
+                src.ignore(TAILLEBUFFER,'\n');
+            }
+            ++ligneLu;
         }
+        succeed = true;
+    }
+    else
+    {
+        cout << "je n'ai pas compris veuillez reessayer" << endl;
+    }
+    if(succeed)
+    {
+        cout << "Bravo vos trajets ont ete importes dans le catalogue ! " << endl;
     }
 }//----- Fin de Import
 
