@@ -34,7 +34,7 @@ typedef struct
     char * Parent = nullptr;
 }DataVille;
 
-//----------------------------------------------------- Fonction Ordinaire
+//----------------------------------------------------- Fonctions Ordinaires
 
 static bool explore( const char * unDepart, const char * uneArrivee , DataVille * Ville , int VilleUnique, Maillon * debutListe)
 {
@@ -94,12 +94,12 @@ char * Ajuster(char * aAjuster)
     char * ajuste = new char[strlen(aAjuster)+1];
     strcpy( ajuste , aAjuster );
     return ajuste;
-}
+}//---- Fin de Ajuster
 
 bool ExistanceFichier(const string& name){
     ifstream f(name.c_str());
     return f.good();
-}
+}//---- Fin de ExistanceFichier
 
 //----------------------------------------------------- Méthodes publiques
 
@@ -110,7 +110,7 @@ ListeChainee * Catalogue::GetListeParcours()
 
 void Catalogue::Sauvegarde()
 {
-    int mode = 0;
+    // int mode = 0;
     string lecture;
     cout << " --- Menu de Sauvegarde --- " << endl;
     cout << "Dans quel fichier voulez vous faire votre sauvegarde" << endl;
@@ -118,8 +118,15 @@ void Catalogue::Sauvegarde()
     ofstream dest ( lecture );
     cout << endl;
 
-    cout << "Choisissez le type de Sauvegarde : du Catalogue (1)" << endl;
-    GetListeParcours()->Sauvegarde( dest , 1);
+    cout << endl << "Quel type de sauvegarde voullez vous effectuez" << endl;
+    cout << "- 1 : L'integralité du Catalogue " << endl;
+    cout << "- 2 : Selon le type de trajet " << endl;
+    cout << "- 3 : Selon la ville de depart et/ou d'arrivee " << endl;
+    cout << "- 4 : Selon l'index du trajet " << endl << ">> ";
+
+    cin >> lecture;
+
+    GetListeParcours()->Sauvegarde( dest , lecture);
 }
 
 void Catalogue::Inserer( Trajet * aInserer)
@@ -330,7 +337,7 @@ void Catalogue::Import()
     cout << "- 1 : Sans critere de selection " << endl;
     cout << "- 2 : Selon le type de trajet " << endl;
     cout << "- 3 : Selon la ville de depart et/ou d'arrivee " << endl;
-    cout << "- 4 : Selon l'index du trajet " << endl;
+    cout << "- 4 : Selon l'index du trajet " << endl << ">> ";
     char lecture;
     cin >> lecture;
     if(lecture == '1') // import tout

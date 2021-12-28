@@ -30,6 +30,8 @@ public:
     // Par défaut mode = 0 : On affiche les trajets de manière classique
     // mode = 1 : On affiche les trajets simple au sein de trajets composees
 
+    string type() const;
+
 //----------------------------------------------------------------Getteur
 
     char * GetVilleDepart() const;

@@ -22,7 +22,17 @@ using namespace std;
 
 //----------------------------------------------------------------- PUBLIC
 
+//--------------------------------------------------- Fonctions Ordinaires
+
+string convertToString(char* a);
+
 //----------------------------------------------------- Méthodes publiques
+
+string TrajetCompose::type() const
+{
+  string type = "C"; //Compose
+  return type;
+}//----- Fin de type()
 
 string TrajetCompose::Afficher( int mode ) const
 {
@@ -30,10 +40,26 @@ string TrajetCompose::Afficher( int mode ) const
       cout << "Appel a l'Afficheur() <TrajetCompose>" << endl;
   #endif
 
-  cout << "Trajet Composee de : " << endl;
-  listeTrajets->Afficher( 1 );
-  cout << endl;
-  return "void";
+  if ( mode == 0 )
+  {
+    cout << "Trajet Composee de : " << endl;
+    listeTrajets->Afficher( 1 );
+    cout << endl;
+
+    string Affichage = "Cout" ;
+    return Affichage;
+  }
+  else if (mode == 2 )
+  {
+    string leDepart = convertToString(GetVilleDepart());
+    string lArrivee = convertToString(GetVilleArrivee());
+    string Affichage = "C,"+leDepart+','+lArrivee+';'+leDepart+','+listeTrajets->Afficher(mode);
+    return Affichage;
+  }
+
+  string Affichage = "Err" ;
+  return Affichage;
+
 } //----- Fin de Afficher
 
 //----------------------------------------------------------------Getteur

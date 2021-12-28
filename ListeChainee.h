@@ -30,7 +30,7 @@ class ListeChainee
 {
 public:
 //--------------------------- Méthodes publiques
-    void Sauvegarde( ofstream & dest, int mode );
+    void Sauvegarde( ofstream & dest, string mode );
     // Mode d'emploi :
     // Permet de Sauvegarder l'intégralité ou une partie de la liste en fonction de différents critéres 
     void AjouterTri( Trajet * contenu);
@@ -45,7 +45,7 @@ public:
     // Mode d'emploi :
     // Ajout d'un Trajet en fin de liste
 
-    void Afficher ( int mode = 0 ) const;
+    string Afficher ( int mode = 0 ) const;
     // Mode d'emploi :
     // Affiche le contenu de la liste :
     // Par défaut mode = 0 : On affiche les trajets de manière classique

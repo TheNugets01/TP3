@@ -1,6 +1,12 @@
 #include <iostream>
 #include <fstream>
-#include <cstring>
+#include "Catalogue.h"
+#include "TrajetSimple.h"
+#include "Trajet.h"
+
+
+#include <typeinfo>
+
 using namespace std;
 
 string convertToString(char* a)
@@ -16,10 +22,9 @@ string convertToString(char* a)
 
 int main ( )
 {   
-    char * mou = new char(5);
-    mou = "yo";
-    string s = convertToString(mou);
-    cout << s+s << endl;
+    int papa;
+    Trajet * T = new TrajetSimple( "a" ,"a","a");
+    cout << typeid(papa).name() << endl;
 
     return 0;
 }

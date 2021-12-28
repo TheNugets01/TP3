@@ -36,6 +36,10 @@ public:
     // Mode d'emploi :
     // Affiche le contenu du trajetCompose
 
+    string type() const;
+    // Mode d'emploi :
+    // Retourne le nom de la classe
+
 //----------------------------------------------------------------Getteur
 
     char * GetVilleDepart() const;

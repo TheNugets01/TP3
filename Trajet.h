@@ -12,6 +12,9 @@
 
 //--------------------------------------------------- Interfaces utilisées
 
+#include <cstring>
+using namespace std;
+
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -35,6 +38,10 @@ public:
     // Affiche le contenu de la liste :
     // Par défaut mode = 0 : On affiche les trajets de manière classique
     // mode = 1 : On affiche les trajets simple au sein de trajets composees
+
+    virtual string type() const = 0;
+    // Mode d'emploi :
+    // Retourne le nom de la classe
 
 //----------------------------------------------------------------Getteur
 

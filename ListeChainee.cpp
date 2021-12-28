@@ -22,6 +22,20 @@ using namespace std;
 
 //------------------------------------------------------------------PUBLIC
 
+//--------------------------------------------------- Fonctions Ordinaires
+
+string convertToString(char* a)
+{
+    int size =0;
+    for (size = 0; a[size]!= '\0' ; ++size){}
+    string s = "";
+
+    for (int i = 0; i < size; i++) {
+        s = s + a[i];
+    }
+    return s;
+}
+
 //----------------------------------------------------- Méthodes publiques
 void NouveauEnSuite(  Trajet * contenu , Maillon * actuelle)
 {
@@ -35,12 +49,84 @@ void NouveauEnSuite(  Trajet * contenu , Maillon * actuelle)
 
 
 
-void ListeChainee::Sauvegarde( ofstream & dest, int mode )
+void ListeChainee::Sauvegarde( ofstream & dest, string mode )
 {
   Maillon * actuelle = debut;
-  if(mode == 1)
+
+  if( mode == "1")//Sauvegarde du Catalogue
   {
     while( actuelle != nullptr)
+    {
+      dest << actuelle->GetTrajet()->Afficher(2) << endl ;
+      actuelle = actuelle->GetProchain();
+    }
+  }
+  else if( mode == "2")
+  {
+    string type;
+    do{
+      cout << "Quel type souhaitez vous sauvegarde" << endl;
+      cout << "- S : les trajets simples" << endl;
+      cout << "- C : les trajets composes" << endl << ">> ";
+      cin >> type;
+    }while( type != "S" && type != "C");
+
+    string typeTrajet = "T"+type;
+
+    while( actuelle != nullptr)
+    {
+      if( actuelle->GetTrajet()->type() == type )
+      {
+        dest << actuelle->GetTrajet()->Afficher(2) << endl ;
+      }
+      actuelle = actuelle->GetProchain();
+    }
+  }
+  else if( mode == "3")
+  {
+    cout << "Indiquez votre ville de depart (ou -1 si import par ville d'arrivee)" << endl;
+    string choixDepart;
+    cin >> choixDepart;
+    string choixArrivee;
+    if(choixDepart != "-1")
+    {
+      cout << "Indiquez votre ville d'arrive (ou -1 si uniquement par depart)" << endl;
+    }
+    else
+    {
+      cout << "Indiquez votre ville d'arrivee : " << endl;
+    }
+    cin >> choixArrivee;
+
+    while(actuelle != nullptr)
+    {
+      if( (choixDepart == convertToString( actuelle->GetTrajet()->GetVilleDepart() ) && (choixArrivee == convertToString( actuelle->GetTrajet()->GetVilleArrivee() ) || choixArrivee=="-1")) 
+            || (choixArrivee== convertToString( actuelle->GetTrajet()->GetVilleArrivee() ) && choixDepart=="-1"))
+      {
+        dest << actuelle->GetTrajet()->Afficher(2) << endl ;
+      }
+      
+      actuelle = actuelle->GetProchain();
+    }
+  }
+  else if( mode == "4")
+  {
+    cout << "Debut de l'intervalle de selection" << endl;
+    int n;
+    cin >> n;
+
+    cout << "Fin de l'intervalle de selection" << endl;
+    int m;
+    cin >> m;
+
+    int LigneLu = 1;
+    while( LigneLu != n )
+    {
+      actuelle = actuelle->GetProchain();
+      ++LigneLu;
+    }
+
+    for(int i = 0 ; i <= m-n ; ++i)
     {
       dest << actuelle->GetTrajet()->Afficher(2) << endl ;
       actuelle = actuelle->GetProchain();
@@ -179,11 +265,14 @@ void ListeChainee::AjouterFin( Trajet * contenu )
   }
 } //----- Fin de AjouterFin
 
-void ListeChainee::Afficher ( int mode ) const
+string ListeChainee::Afficher ( int mode ) const
 {
   #ifdef MAP
       cout << "Appel a la fonction Afficher() de <ListeChainee>" << endl;
   #endif
+
+  string Affichage ="";
+
   if ( mode == 0)
   {
     Maillon * courant = debut;
@@ -203,6 +292,19 @@ void ListeChainee::Afficher ( int mode ) const
       courant = courant->GetProchain();
     }
   }
+  else if (mode == 2 )
+  {
+    Maillon * courant = debut;
+    while( courant != nullptr )
+    {
+      Affichage = Affichage + (courant -> GetTrajet()->Afficher(mode+1));
+      courant = courant->GetProchain();
+    }
+
+    return Affichage;
+  }
+
+  return Affichage = "Cout";
 } //----- Fin de Afficher
 
 //---------------------------- Constructeurs - destructeur
