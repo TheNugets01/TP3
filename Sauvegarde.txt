@@ -1,2 +1,0 @@
-S;D,M,A
-C,D,A;D,M,B,M,A
