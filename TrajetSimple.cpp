@@ -51,7 +51,7 @@ string TrajetSimple::Afficher( int mode ) const
     string lArrivee = convertToString(villeArrivee);
     string leMoyenTransport = convertToString(moyenTransport);
 
-    string Ligne = "S;"+leDepart+','+leMoyenTransport+','+lArrivee;
+    string Ligne = "S,"+leDepart+','+lArrivee+';'+leDepart+','+leMoyenTransport+','+lArrivee;
     return Ligne;
   }
   else if( mode == 3 )

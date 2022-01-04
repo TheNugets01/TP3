@@ -52,12 +52,21 @@ void NouveauEnSuite(  Trajet * contenu , Maillon * actuelle)
 void ListeChainee::Sauvegarde( ofstream & dest, string mode )
 {
   Maillon * actuelle = debut;
+  bool premierEcris = false;
 
   if( mode == "1")//Sauvegarde du Catalogue
   {
     while( actuelle != nullptr)
     {
-      dest << actuelle->GetTrajet()->Afficher(2) << endl ;
+      if(!premierEcris)
+      {
+        dest << actuelle->GetTrajet()->Afficher(2);
+        premierEcris = true;
+      }
+      else
+      {
+        dest << endl << actuelle->GetTrajet()->Afficher(2);
+      }
       actuelle = actuelle->GetProchain();
     }
   }
@@ -77,7 +86,15 @@ void ListeChainee::Sauvegarde( ofstream & dest, string mode )
     {
       if( actuelle->GetTrajet()->type() == type )
       {
-        dest << actuelle->GetTrajet()->Afficher(2) << endl ;
+        if(!premierEcris)
+        {
+          dest << actuelle->GetTrajet()->Afficher(2);
+          premierEcris = true;
+        }
+        else
+        {
+          dest << endl << actuelle->GetTrajet()->Afficher(2);
+        }
       }
       actuelle = actuelle->GetProchain();
     }
@@ -103,7 +120,15 @@ void ListeChainee::Sauvegarde( ofstream & dest, string mode )
       if( (choixDepart == convertToString( actuelle->GetTrajet()->GetVilleDepart() ) && (choixArrivee == convertToString( actuelle->GetTrajet()->GetVilleArrivee() ) || choixArrivee=="-1")) 
             || (choixArrivee== convertToString( actuelle->GetTrajet()->GetVilleArrivee() ) && choixDepart=="-1"))
       {
-        dest << actuelle->GetTrajet()->Afficher(2) << endl ;
+          if(!premierEcris)
+          {
+            dest << actuelle->GetTrajet()->Afficher(2);
+            premierEcris = true;
+          }
+          else
+          {
+            dest << endl << actuelle->GetTrajet()->Afficher(2);
+          }
       }
       
       actuelle = actuelle->GetProchain();
@@ -128,7 +153,15 @@ void ListeChainee::Sauvegarde( ofstream & dest, string mode )
 
     for(int i = 0 ; i <= m-n ; ++i)
     {
-      dest << actuelle->GetTrajet()->Afficher(2) << endl ;
+      if(!premierEcris)
+      {
+        dest << actuelle->GetTrajet()->Afficher(2);
+        premierEcris = true;
+      }
+      else
+      {
+        dest << endl << actuelle->GetTrajet()->Afficher(2);
+      }
       actuelle = actuelle->GetProchain();
     }
   }
