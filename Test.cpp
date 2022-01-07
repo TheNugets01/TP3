@@ -22,9 +22,10 @@ string convertToString(char* a)
 
 int main ( )
 {   
-    int papa;
-    Trajet * T = new TrajetSimple( "a" ,"a","a");
-    cout << typeid(papa).name() << endl;
+    char * cha;
+    cin>>cha;
+    string str = cha;
+    cout << str << endl;
 
     return 0;
 }

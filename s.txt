@@ -1,0 +1,4 @@
+S,Strasbourg,Lyon;Strasbourg,Avion,Lyon
+C,Lille,Bordeaux;Lille,Pied,Lens,Train,Bordeaux,
+S,Strasbourg,Nice;Strasbourg,Avion,Nice
+C,Lille,Nice;Lille,Pied,Lens,Train,Nice,

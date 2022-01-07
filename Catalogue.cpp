@@ -109,6 +109,7 @@ ListeChainee * Catalogue::GetListeParcours()
 }
 
 void Catalogue::Sauvegarde()
+// Cette méthode permet d'importer des données du Catalogue dans un fichier
 {
     // int mode = 0;
     string lecture;
@@ -127,7 +128,7 @@ void Catalogue::Sauvegarde()
     cin >> lecture;
 
     GetListeParcours()->Sauvegarde( dest , lecture);
-}
+}//----- Fin de Sauvegarde
 
 void Catalogue::Inserer( Trajet * aInserer)
 {
@@ -315,6 +316,7 @@ void Catalogue::LireFichier(ifstream & src, char typeTrajet)
 }
 
 void Catalogue::Import()
+// Cette méthode permet d'importer les donné contenu dans un fichier dans le catalogue
 {
     bool succeed = false;
     bool created = false;

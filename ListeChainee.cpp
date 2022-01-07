@@ -25,6 +25,7 @@ using namespace std;
 //--------------------------------------------------- Fonctions Ordinaires
 
 string convertToString(char* a)
+// Recoit un char * et renvoie un string équivallent
 {
     int size =0;
     for (size = 0; a[size]!= '\0' ; ++size){}
@@ -34,7 +35,7 @@ string convertToString(char* a)
         s = s + a[i];
     }
     return s;
-}
+}//----- Fin de convertToString
 
 //----------------------------------------------------- Méthodes publiques
 void NouveauEnSuite(  Trajet * contenu , Maillon * actuelle)
@@ -47,9 +48,23 @@ void NouveauEnSuite(  Trajet * contenu , Maillon * actuelle)
   actuelle -> SetProchain( nouveau );
 }
 
+Maillon * ListeChainee::GetDebut() const
+{
+  return debut;
+} //----- Fin de GetDebut
 
+Maillon * ListeChainee::GetFin() const
+{
+  return fin;
+} //----- Fin de GetFin
+
+int ListeChainee::GetNbMaillon() const
+{
+  return nbMaillon;
+} //----- Fin de GetNbMaillon
 
 void ListeChainee::Sauvegarde( ofstream & dest, string mode )
+//Cette méthode permet de sauvegarder des parties de la liste dans un fichier
 {
   Maillon * actuelle = debut;
   bool premierEcris = false;
@@ -70,7 +85,7 @@ void ListeChainee::Sauvegarde( ofstream & dest, string mode )
       actuelle = actuelle->GetProchain();
     }
   }
-  else if( mode == "2")
+  else if( mode == "2")//Sauvegarde selon le type
   {
     string type;
     do{
@@ -79,8 +94,6 @@ void ListeChainee::Sauvegarde( ofstream & dest, string mode )
       cout << "- C : les trajets composes" << endl << ">> ";
       cin >> type;
     }while( type != "S" && type != "C");
-
-    string typeTrajet = "T"+type;
 
     while( actuelle != nullptr)
     {
@@ -99,7 +112,7 @@ void ListeChainee::Sauvegarde( ofstream & dest, string mode )
       actuelle = actuelle->GetProchain();
     }
   }
-  else if( mode == "3")
+  else if( mode == "3")//Sauvegarde selon ville départ et ou d'arriver
   {
     cout << "Indiquez votre ville de depart (ou -1 si import par ville d'arrivee)" << endl;
     string choixDepart;
@@ -134,7 +147,7 @@ void ListeChainee::Sauvegarde( ofstream & dest, string mode )
       actuelle = actuelle->GetProchain();
     }
   }
-  else if( mode == "4")
+  else if( mode == "4")//Sauvegarde selon un index
   {
     cout << "Debut de l'intervalle de selection" << endl;
     int n;
@@ -145,13 +158,16 @@ void ListeChainee::Sauvegarde( ofstream & dest, string mode )
     cin >> m;
 
     int LigneLu = 1;
+
     while( LigneLu != n )
+    // Positionement de l'index au début
     {
       actuelle = actuelle->GetProchain();
       ++LigneLu;
     }
 
     for(int i = 0 ; i <= m-n ; ++i)
+    // Sauvegarde de l'intevalle
     {
       if(!premierEcris)
       {
@@ -167,21 +183,6 @@ void ListeChainee::Sauvegarde( ofstream & dest, string mode )
   }
 }
 
-
-Maillon * ListeChainee::GetDebut() const
-{
-  return debut;
-} //----- Fin de GetDebut
-
-Maillon * ListeChainee::GetFin() const
-{
-  return fin;
-} //----- Fin de GetFin
-
-int ListeChainee::GetNbMaillon() const
-{
-  return nbMaillon;
-}
 
 void ListeChainee::AjouterTri( Trajet * contenu )
 {
